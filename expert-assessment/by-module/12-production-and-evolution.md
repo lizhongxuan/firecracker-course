@@ -177,9 +177,9 @@
 
 ## 复核资料
 
-- [生产配置依据](../../../../docs/prod-host-setup.md)
-- [版本策略](../../../../docs/RELEASE_POLICY.md)
-- [快照兼容性](../../../../docs/snapshotting/versioning.md)
+- [生产配置依据](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/prod-host-setup.md)
+- [版本策略](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/RELEASE_POLICY.md)
+- [快照兼容性](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/snapshotting/versioning.md)
 - [短任务平台参考案例](../../references/capacity-and-state-case.md)
 - [gVisor 架构对照](https://gvisor.dev/docs/architecture_guide/intro/)
 - [containerd 版本与运行时关系](https://github.com/containerd/containerd)

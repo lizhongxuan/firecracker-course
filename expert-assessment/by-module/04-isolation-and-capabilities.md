@@ -265,8 +265,8 @@ agent 允许访问指定包仓库与一个业务 API，其余目标禁止。你�
 ## 复核资料
 
 - [隔离与配额专题](../../references/isolation-and-resources.md)
-- [生产宿主机建议](../../../../docs/prod-host-setup.md)
-- [MMDS](../../../../docs/mmds/mmds-user-guide.md)
+- [生产宿主机建议](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/prod-host-setup.md)
+- [MMDS](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/mmds/mmds-user-guide.md)
 - [cgroup v2](https://docs.kernel.org/admin-guide/cgroup-v2.html)
 - [runc 配置与实现](https://github.com/opencontainers/runc)
 - [gVisor 隔离边界](https://gvisor.dev/docs/architecture_guide/intro/)

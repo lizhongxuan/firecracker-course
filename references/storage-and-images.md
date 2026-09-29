@@ -19,11 +19,11 @@
 
 ## 2. 资料阅读
 
-- [Virtio-block](../../../docs/block.md)：设备配置、只读模式和 I/O 后端。
-- [Block Caching](../../../docs/api_requests/block-caching.md)：理解 `Unsafe` 与 `Writeback` 的 flush 语义。
-- [Block IO Engine](../../../docs/api_requests/block-io-engine.md)：同步与异步 I/O 的条件和取舍。
-- [块设备功能测试](../../../tests/integration_tests/functional/test_drive_virtio.py)：查写入、更新与错误处理案例。
-- 选读：[块设备性能测试](../../../tests/integration_tests/performance/test_block.py)。
+- [Virtio-block](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/block.md)：设备配置、只读模式和 I/O 后端。
+- [Block Caching](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/api_requests/block-caching.md)：理解 `Unsafe` 与 `Writeback` 的 flush 语义。
+- [Block IO Engine](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/api_requests/block-io-engine.md)：同步与异步 I/O 的条件和取舍。
+- [块设备功能测试](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/tests/integration_tests/functional/test_drive_virtio.py)：查写入、更新与错误处理案例。
+- 选读：[块设备性能测试](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/tests/integration_tests/performance/test_block.py)。
 
 ## 3. 数据路径与设计取舍
 

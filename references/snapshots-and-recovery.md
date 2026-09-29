@@ -19,11 +19,11 @@
 
 ## 2. 资料阅读
 
-- 必读：[Snapshot Support](../../../docs/snapshotting/snapshot-support.md)，读 Overview、API、Limitations、Security and Uniqueness。
-- 必读：[Versioning](../../../docs/snapshotting/versioning.md)，理解 CPU、宿主内核、设备和格式兼容性。
-- 必读：[Network for Clones](../../../docs/snapshotting/network-for-clones.md) 与 [Random for Clones](../../../docs/snapshotting/random-for-clones.md)。
-- 对照：[基础快照测试](../../../tests/integration_tests/functional/test_snapshot_basic.py)。
-- 选读：[恢复时的缺页处理](../../../docs/snapshotting/handling-page-faults-on-snapshot-resume.md)，后续再研究 userfaultfd。
+- 必读：[Snapshot Support](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/snapshotting/snapshot-support.md)，读 Overview、API、Limitations、Security and Uniqueness。
+- 必读：[Versioning](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/snapshotting/versioning.md)，理解 CPU、宿主内核、设备和格式兼容性。
+- 必读：[Network for Clones](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/snapshotting/network-for-clones.md) 与 [Random for Clones](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/snapshotting/random-for-clones.md)。
+- 对照：[基础快照测试](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/tests/integration_tests/functional/test_snapshot_basic.py)。
+- 选读：[恢复时的缺页处理](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/snapshotting/handling-page-faults-on-snapshot-resume.md)，后续再研究 userfaultfd。
 
 ## 3. 快照边界
 

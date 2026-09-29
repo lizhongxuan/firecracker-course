@@ -170,7 +170,7 @@
 4. 相同初始任务状态与不同随机探索并不冲突；记录基础 seed 及可复现的分支随机流，避免把同一用户态 RNG/令牌盲目复制。
 5. 工具请求在途时可排空、等待或记录不确定状态，但不能复制未决外部事务就声称分支独立。
 6. Firecracker 快照是底层机制，不自动实现所有业务状态的 fork。
-7. 宿主 `fork()` 共享/继承 KVM 文件描述符也不能当作受支持的通用 VM 克隆方案；必要时核对 [KVM API 限制](https://docs.kernel.org/virt/kvm/api.html) 与 [快照文档](../../../../docs/snapshotting/snapshot-support.md)。
+7. 宿主 `fork()` 共享/继承 KVM 文件描述符也不能当作受支持的通用 VM 克隆方案；必要时核对 [KVM API 限制](https://docs.kernel.org/virt/kvm/api.html) 与 [快照文档](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/snapshotting/snapshot-support.md)。
 
 **深入追问**
 
@@ -263,9 +263,9 @@
 ## 复核资料
 
 - [快照与恢复专题](../../references/snapshots-and-recovery.md)
-- [Snapshot Support](../../../../docs/snapshotting/snapshot-support.md)
-- [快照版本](../../../../docs/snapshotting/versioning.md)
-- [克隆随机状态](../../../../docs/snapshotting/random-for-clones.md)
+- [Snapshot Support](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/snapshotting/snapshot-support.md)
+- [快照版本](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/snapshotting/versioning.md)
+- [克隆随机状态](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/snapshotting/random-for-clones.md)
 - [E2B 快照、恢复与 fork](https://github.com/e2b-dev/runtime)
 - [E2B 组件与状态流](https://github.com/e2b-dev/runtime/blob/main/docs/ARCHITECTURE.md)
 

@@ -19,9 +19,9 @@
 
 ## 2. 资料阅读
 
-- 复习：[Design](../../../docs/design.md)、[API](../../../src/firecracker/swagger/firecracker.yaml)、[生产宿主机建议](../../../docs/prod-host-setup.md)。
-- 复习：[Snapshot Support](../../../docs/snapshotting/snapshot-support.md)、[CPU templates](../../../docs/cpu_templates/cpu-templates.md)：了解可复用和可迁移状态的边界。
-- 对照：[测试说明](../../../tests/README.md)，用已有功能和性能测试理解 VMM 提供的行为保证。
+- 复习：[Design](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/design.md)、[API](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/src/firecracker/swagger/firecracker.yaml)、[生产宿主机建议](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/prod-host-setup.md)。
+- 复习：[Snapshot Support](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/snapshotting/snapshot-support.md)、[CPU templates](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/cpu_templates/cpu-templates.md)：了解可复用和可迁移状态的边界。
+- 对照：[测试说明](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/tests/README.md)，用已有功能和性能测试理解 VMM 提供的行为保证。
 
 本课的任务 API、调度器、租约、数据表和策略是教学设计；官方文档提供底层能力依据，不意味着这些平台功能由 Firecracker 自动完成。
 

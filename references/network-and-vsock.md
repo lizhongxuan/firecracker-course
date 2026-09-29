@@ -11,18 +11,18 @@
 
 **二层与三层。**以太网帧使用 MAC 地址，IP 包使用 IP 地址，TCP/UDP 再用端口识别通信端点。把这些层分开，才知道该检查邻居解析、路由还是服务监听。
 
-**TAP、bridge、路由与 NAT。**TAP 让用户态程序收发以太网帧；Linux bridge 连接二层网络；路由决定 IP 包的下一跳；NAT 改写地址或端口。它们解决不同问题。Firecracker 使用宿主机 TAP 作为虚拟网卡后端，宿主机的转发和策略由集成者配置。[网络官方指南](../../../docs/network-setup.md)
+**TAP、bridge、路由与 NAT。**TAP 让用户态程序收发以太网帧；Linux bridge 连接二层网络；路由决定 IP 包的下一跳；NAT 改写地址或端口。它们解决不同问题。Firecracker 使用宿主机 TAP 作为虚拟网卡后端，宿主机的转发和策略由集成者配置。[网络官方指南](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/network-setup.md)
 
 **DNS。**域名解析失败和目标 IP 不通是不同故障。排查时分开验证解析结果、路由和端口，不能只用一次 `ping` 判断服务健康。
 
-**vsock。**virtio-vsock 提供宿主机与客户机通信能力；Firecracker 的宿主侧通过 Unix socket 后端衔接。它适合任务控制、结果或健康信号，但不替代互联网访问，也不自动定义应用协议、身份验证和消息大小限制。[vsock 文档](../../../docs/vsock.md)
+**vsock。**virtio-vsock 提供宿主机与客户机通信能力；Firecracker 的宿主侧通过 Unix socket 后端衔接。它适合任务控制、结果或健康信号，但不替代互联网访问，也不自动定义应用协议、身份验证和消息大小限制。[vsock 文档](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/vsock.md)
 
 ## 2. 资料阅读
 
-- 必读：[Network Setup](../../../docs/network-setup.md)，读 TAP、NAT 和多客户机配置；网卡名与网段必须匹配实际环境。
-- 必读：[vsock](../../../docs/vsock.md)，区分宿主主动连接、客户机主动连接以及后端路径。
-- 对照：[网络功能测试](../../../tests/integration_tests/functional/test_net.py) 与 [vsock 测试](../../../tests/integration_tests/functional/test_vsock.py)。
-- 选读：[克隆网络](../../../docs/snapshotting/network-for-clones.md)，快照与 fork 模块再深入。
+- 必读：[Network Setup](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/network-setup.md)，读 TAP、NAT 和多客户机配置；网卡名与网段必须匹配实际环境。
+- 必读：[vsock](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/vsock.md)，区分宿主主动连接、客户机主动连接以及后端路径。
+- 对照：[网络功能测试](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/tests/integration_tests/functional/test_net.py) 与 [vsock 测试](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/tests/integration_tests/functional/test_vsock.py)。
+- 选读：[克隆网络](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/snapshotting/network-for-clones.md)，快照与 fork 模块再深入。
 
 ## 3. 请求路径
 

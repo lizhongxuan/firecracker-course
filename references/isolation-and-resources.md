@@ -19,9 +19,9 @@
 
 ## 2. 资料阅读
 
-- 必读：[Jailer](../../../docs/jailer.md)，关注 UID/GID、chroot、cgroup、可选 network namespace 与路径处理。
-- 必读：[生产宿主机建议](../../../docs/prod-host-setup.md)，关注默认 seccomp、宿主补丁、权限和输出限制。
-- 必读：[Seccomp](../../../docs/seccomp.md) 与 [Design：Threat Containment](../../../docs/design.md)。
+- 必读：[Jailer](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/jailer.md)，关注 UID/GID、chroot、cgroup、可选 network namespace 与路径处理。
+- 必读：[生产宿主机建议](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/prod-host-setup.md)，关注默认 seccomp、宿主补丁、权限和输出限制。
+- 必读：[Seccomp](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/seccomp.md) 与 [Design：Threat Containment](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/design.md)。
 - 补基础：[Linux cgroup v2 官方文档](https://docs.kernel.org/admin-guide/cgroup-v2.html)，查 `cpu.max`、`memory.max`、`memory.events`；先确认服务器是否使用 v2。
 
 ## 3. Firecracker 中的对应关系

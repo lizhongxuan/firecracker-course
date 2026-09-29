@@ -255,6 +255,8 @@ virtio-net 解决“让 Guest 收发报文”。Firecracker 的设备限流可�
 
 ## 四、virtio-blk：文件操作怎样变成宿主磁盘 I/O
 
+设备初始化、描述符队列与完整请求路径，见：[virtio-blk 原理：Guest 驱动如何与 Firecracker 完成磁盘 I/O](virtio-blk-driver-and-io-path.md)。
+
 ### 4.1 Guest 里的文件，怎样存进宿主磁盘镜像
 
 Guest 可以把 `/dev/vda` 当作一块磁盘，并在上面使用 ext4 等文件系统。**文件系统**负责把磁盘上的数据组织成文件和目录，ext4 是 Linux 常用的一种。`/dev/vda` 则是 Guest 中的磁盘设备名称，并不是宿主磁盘的路径。

@@ -4,7 +4,7 @@
 
 ## 从这里开始：学习教练
 
-在 Codex 中输入：`使用 $firecracker-study-coach，告诉我现在该学哪一步。` 本地 [学习教练](/Users/zhongxuan_li/.codex/skills/firecracker-study-coach/SKILL.md) 会查看 [学习进度](learning-progress.md)，只给当前最重要的一个小任务、资料入口和完成标准。做完后回复成果；卡住时直接向 AI 问具体问题即可。
+在 Codex 中输入：`使用 $firecracker-study-coach，告诉我现在该学哪一步。` 本地安装的 `firecracker-study-coach` 技能会查看 [学习进度](learning-progress.md)，只给当前最重要的一个小任务、资料入口和完成标准。做完后回复成果；卡住时直接向 AI 问具体问题即可。
 
 第一次从模块 01 的基础知识与边界图开始。已有经验可用源码、实验或口头推演快速验证，再跳到尚未掌握的模块。课程中的大量资料用于按需查阅，无须从头通读。
 
@@ -65,7 +65,7 @@ flowchart TD
 
 | 项目与一手入口 | 学习深度 | 完成标志 |
 | --- | --- | --- |
-| [Firecracker](../../README.md) | 深入运行时与故障路径 | 真实启动、恢复和隔离实验，能追踪关键源码 |
+| [Firecracker](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/README.md) | 深入运行时与故障路径 | 真实启动、恢复和隔离实验，能追踪关键源码 |
 | [E2B Runtime](https://github.com/e2b-dev/runtime)（原 infra） | 深入生命周期与快照链路 | 画出 API → 节点编排 → Firecracker → envd 的调用链，解释中断与清理 |
 | [OpenHands Software Agent SDK](https://github.com/OpenHands/software-agent-sdk) | 深入会话、工具和事件 | 追踪一次工具执行，验证取消、持久状态及协作产物 |
 | [verl Agent Loop](https://verl.readthedocs.io/en/latest/advance/agent_loop.html) | 深入 Rollout 接口，理解训练衔接 | 保留原始生成记录、工具观测、结束原因、版本与重试信息 |
@@ -110,6 +110,6 @@ macOS 用于阅读、源码分析、设计和本地 mock；Linux 用于真实容
 
 ## 技术资料
 
-本地 Firecracker 参考提交为 `30471852666564d980f330d0575115eda7d5ce8e`。运行实验按所选版本核对 [入门文档](../../docs/getting-started.md)、[API](../../src/firecracker/swagger/firecracker.yaml) 和 [内核策略](../../docs/kernel-policy.md)。训练接口可参考 [Gymnasium](https://gymnasium.farama.org/api/env/) 与 [verl Agent Loop](https://verl.readthedocs.io/en/latest/advance/agent_loop.html)，这些资料是机制依据，不代表必须采用某个框架。
+本地 Firecracker 参考提交为 `30471852666564d980f330d0575115eda7d5ce8e`。运行实验按所选版本核对 [入门文档](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/getting-started.md)、[API](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/src/firecracker/swagger/firecracker.yaml) 和 [内核策略](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/kernel-policy.md)。训练接口可参考 [Gymnasium](https://gymnasium.farama.org/api/env/) 与 [verl Agent Loop](https://verl.readthedocs.io/en/latest/advance/agent_loop.html)，这些资料是机制依据，不代表必须采用某个框架。
 
 深入阅读见 [专题资料索引](references/README.md)。

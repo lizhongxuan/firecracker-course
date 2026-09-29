@@ -21,16 +21,16 @@
 
 | 路线 | 文件 | 需要回答 |
 | --- | --- | --- |
-| 启动入口 | [main.rs](../../../src/firecracker/src/main.rs) | 程序入口如何组织 API 与运行流程？ |
-| 动作解析 | [actions.rs](../../../src/firecracker/src/api_server/request/actions.rs) | `InstanceStart` 如何变成 `VmmAction::StartMicroVm`？ |
-| API 适配 | [api_server_adapter.rs](../../../src/firecracker/src/api_server_adapter.rs) | 运行期 API 与 VMM 如何交互？预启动路径有何不同？ |
-| 状态分发 | [rpc_interface.rs](../../../src/vmm/src/rpc_interface.rs) | `handle_preboot_request` 如何检查动作与状态？ |
-| 资源创建 | [builder.rs](../../../src/vmm/src/builder.rs) | `build_microvm_for_boot` 如何组织内存、KVM 和设备？ |
-| vCPU 执行 | [vcpu.rs](../../../src/vmm/src/vstate/vcpu.rs) | `run_emulation` 如何处理运行与退出？ |
-| 网络 I/O | [net/event_handler.rs](../../../src/vmm/src/devices/virtio/net/event_handler.rs) | 哪些事件推动收发和限流？ |
-| virtio 队列 | [queue.rs](../../../src/vmm/src/devices/virtio/queue.rs) | 描述符如何校验与消费？ |
+| 启动入口 | [main.rs](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/src/firecracker/src/main.rs) | 程序入口如何组织 API 与运行流程？ |
+| 动作解析 | [actions.rs](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/src/firecracker/src/api_server/request/actions.rs) | `InstanceStart` 如何变成 `VmmAction::StartMicroVm`？ |
+| API 适配 | [api_server_adapter.rs](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/src/firecracker/src/api_server_adapter.rs) | 运行期 API 与 VMM 如何交互？预启动路径有何不同？ |
+| 状态分发 | [rpc_interface.rs](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/src/vmm/src/rpc_interface.rs) | `handle_preboot_request` 如何检查动作与状态？ |
+| 资源创建 | [builder.rs](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/src/vmm/src/builder.rs) | `build_microvm_for_boot` 如何组织内存、KVM 和设备？ |
+| vCPU 执行 | [vcpu.rs](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/src/vmm/src/vstate/vcpu.rs) | `run_emulation` 如何处理运行与退出？ |
+| 网络 I/O | [net/event_handler.rs](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/src/vmm/src/devices/virtio/net/event_handler.rs) | 哪些事件推动收发和限流？ |
+| virtio 队列 | [queue.rs](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/src/vmm/src/devices/virtio/queue.rs) | 描述符如何校验与消费？ |
 
-这些是导航入口，不意味着每个文件都是同一次调用的直接上下级。结合 [Design：Internal Architecture](../../../docs/design.md) 区分 API、VMM 与 vCPU 线程。
+这些是导航入口，不意味着每个文件都是同一次调用的直接上下级。结合 [Design：Internal Architecture](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/design.md) 区分 API、VMM 与 vCPU 线程。
 
 ## 3. 实验 A：追踪一次启动
 
@@ -49,7 +49,7 @@ rg -n 'run_emulation|KVM_RUN' src/vmm/src/vstate
 
 选网络发送或块设备读取中的一个，画出客户机队列、通知事件、事件处理器、宿主 I/O、完成通知的关系。标出缓冲区所有权、长度检查、错误处理和限流位置。区分控制配置 API 与设备数据路径；业务数据不会逐包经过 HTTP API。
 
-选做：在合适的 Linux 开发环境构建同一源码版本，并按 [测试指南](../../../tests/README.md) 运行与阅读内容相关的一项测试。完整集成测试依赖 KVM 和对应资源，不要求在 macOS 上通过它们。若添加调试日志，只做局部修改，并说明测量结果可能被日志扰动。
+选做：在合适的 Linux 开发环境构建同一源码版本，并按 [测试指南](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/tests/README.md) 运行与阅读内容相关的一项测试。完整集成测试依赖 KVM 和对应资源，不要求在 macOS 上通过它们。若添加调试日志，只做局部修改，并说明测量结果可能被日志扰动。
 
 ## 5. 验收
 

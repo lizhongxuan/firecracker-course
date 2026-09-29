@@ -17,7 +17,7 @@ AI Coding 的交付责任包括定义独立验收条件、审查依赖/API、验
 - [源码与事件循环专题](../references/source-and-event-loop.md)
 - [Go 并发检查](https://go.dev/doc/articles/race_detector)
 - [Tokio 优雅关闭](https://tokio.rs/tokio/topics/shutdown)
-- [Firecracker 测试指南](../../../tests/README.md)
+- [Firecracker 测试指南](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/tests/README.md)
 - [E2B Go 实现](https://github.com/e2b-dev/runtime)
 - [OpenHands Python SDK](https://github.com/OpenHands/software-agent-sdk)
 - [verl 源码与接口](https://github.com/verl-project/verl)

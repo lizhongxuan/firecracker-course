@@ -19,10 +19,10 @@
 
 ## 2. 资料阅读
 
-- [API 定义](../../../src/firecracker/swagger/firecracker.yaml)：查配置、启动、`/vm` 暂停恢复、快照接口与错误响应。
-- [Actions](../../../docs/api_requests/actions.md)：确认当前版本支持的动作及条件。
-- [API 功能测试](../../../tests/integration_tests/functional/test_api.py)：观察合法与非法状态下的调用。
-- [暂停与恢复测试](../../../tests/integration_tests/functional/test_pause_resume.py)：理解操作后的行为。
+- [API 定义](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/src/firecracker/swagger/firecracker.yaml)：查配置、启动、`/vm` 暂停恢复、快照接口与错误响应。
+- [Actions](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/api_requests/actions.md)：确认当前版本支持的动作及条件。
+- [API 功能测试](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/tests/integration_tests/functional/test_api.py)：观察合法与非法状态下的调用。
+- [暂停与恢复测试](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/tests/integration_tests/functional/test_pause_resume.py)：理解操作后的行为。
 
 ## 3. 管理层状态机
 

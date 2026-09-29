@@ -196,7 +196,7 @@ agent 等待用户确认 20 分钟，期间会话暂停，用户撤销了工具�
 
 - [生命周期专题](../../references/api-and-lifecycle.md)
 - [平台状态设计专题](../../references/execution-platform-design.md)
-- [Firecracker API](../../../../src/firecracker/swagger/firecracker.yaml)
+- [Firecracker API](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/src/firecracker/swagger/firecracker.yaml)
 - [E2B 生命周期架构](https://github.com/e2b-dev/runtime/blob/main/docs/ARCHITECTURE.md)
 - [OpenHands 会话持久化](https://docs.openhands.dev/sdk/guides/convo-persistence)
 - [Python 异步任务与取消](https://docs.python.org/3/library/asyncio-task.html)

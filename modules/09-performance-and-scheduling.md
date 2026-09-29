@@ -15,8 +15,8 @@
 ## 阅读资料
 
 - [性能与容量专题](../references/observability-and-performance.md)
-- [网络性能](../../../docs/network-performance.md)
-- [快照性能测试](../../../tests/integration_tests/performance/test_snapshot.py)
+- [网络性能](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/network-performance.md)
+- [快照性能测试](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/tests/integration_tests/performance/test_snapshot.py)
 - [Agent Loop 管线](https://verl.readthedocs.io/en/latest/advance/agent_loop.html)
 - [E2B 恢复与缓存架构](https://github.com/e2b-dev/runtime/blob/main/docs/ARCHITECTURE.md)
 - [Kubernetes agent-sandbox 预热池](https://github.com/kubernetes-sigs/agent-sandbox)

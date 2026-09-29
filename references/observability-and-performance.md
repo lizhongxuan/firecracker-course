@@ -19,11 +19,11 @@
 
 ## 2. 资料阅读
 
-- [Logger](../../../docs/logger.md) 与 [Metrics](../../../docs/metrics.md)：分别配置日志和 JSON 指标，区分客户机输出与 VMM 日志。
-- [启动时间测试](../../../tests/integration_tests/performance/test_boottime.py)：检查测试实际计时边界。
-- [内存开销测试](../../../tests/integration_tests/performance/test_memory_overhead.py)：理解不同内存指标的口径。
-- [网络性能](../../../docs/network-performance.md) 与 [快照性能测试](../../../tests/integration_tests/performance/test_snapshot.py)。
-- 进阶：[Tracing](../../../docs/tracing.md) 与 [测试运行说明](../../../tests/README.md)。
+- [Logger](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/logger.md) 与 [Metrics](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/metrics.md)：分别配置日志和 JSON 指标，区分客户机输出与 VMM 日志。
+- [启动时间测试](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/tests/integration_tests/performance/test_boottime.py)：检查测试实际计时边界。
+- [内存开销测试](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/tests/integration_tests/performance/test_memory_overhead.py)：理解不同内存指标的口径。
+- [网络性能](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/network-performance.md) 与 [快照性能测试](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/tests/integration_tests/performance/test_snapshot.py)。
+- 进阶：[Tracing](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/tracing.md) 与 [测试运行说明](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/tests/README.md)。
 
 ## 3. 建立三层观测
 

@@ -199,7 +199,7 @@ VM 里的调用仍是不可信请求。代理必须从可信连接或能力凭�
 ## 复核资料
 
 - [虚拟化与环境检查专题](../../references/virtualization-and-environment.md)
-- [Firecracker 架构](../../../../docs/design.md)
+- [Firecracker 架构](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/design.md)
 - [KVM API](https://docs.kernel.org/virt/kvm/api.html)
 - [containerd：职责与运行时依赖](https://github.com/containerd/containerd)
 - [runc：OCI 容器入口](https://github.com/opencontainers/runc)

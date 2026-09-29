@@ -29,10 +29,10 @@
 
 以下调用链按本地 Firecracker 提交 `30471852666564d980f330d0575115eda7d5ce8e` 核对。
 
-1. [actions.rs](../../../../src/firecracker/src/api_server/request/actions.rs) 的 `parse_put_actions` 将 `InstanceStart` 转为 `ParsedRequest::new_sync(VmmAction::StartMicroVm)`。
-2. [API server](../../../../src/firecracker/src/api_server/mod.rs) 通过 channel 发送动作、写 eventfd 通知 VMM，并等待响应 channel；这是线程间通信，不是直接在 HTTP 解析栈中完成所有 VM 工作。
-3. [rpc_interface.rs](../../../../src/vmm/src/rpc_interface.rs) 的预启动控制器将 `StartMicroVm` 分派到 `start_microvm`，后者直接调用 `build_and_boot_microvm`。
-4. [builder.rs](../../../../src/vmm/src/builder.rs) 的 `build_microvm_for_boot` 建立资源，初始 vCPU 处于暂停状态；`build_and_boot_microvm` 随后调用 `resume_vm` 允许执行。[vcpu.rs](../../../../src/vmm/src/vstate/vcpu.rs) 的 `run_emulation` 经 `self.kvm_vcpu.fd.run()` 进入 KVM 执行。
+1. [actions.rs](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/src/firecracker/src/api_server/request/actions.rs) 的 `parse_put_actions` 将 `InstanceStart` 转为 `ParsedRequest::new_sync(VmmAction::StartMicroVm)`。
+2. [API server](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/src/firecracker/src/api_server/mod.rs) 通过 channel 发送动作、写 eventfd 通知 VMM，并等待响应 channel；这是线程间通信，不是直接在 HTTP 解析栈中完成所有 VM 工作。
+3. [rpc_interface.rs](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/src/vmm/src/rpc_interface.rs) 的预启动控制器将 `StartMicroVm` 分派到 `start_microvm`，后者直接调用 `build_and_boot_microvm`。
+4. [builder.rs](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/src/vmm/src/builder.rs) 的 `build_microvm_for_boot` 建立资源，初始 vCPU 处于暂停状态；`build_and_boot_microvm` 随后调用 `resume_vm` 允许执行。[vcpu.rs](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/src/vmm/src/vstate/vcpu.rs) 的 `run_emulation` 经 `self.kvm_vcpu.fd.run()` 进入 KVM 执行。
 5. 以缺少内核配置为例：builder 返回 `StartMicrovmError::MissingKernelConfig`，沿 Result 传播至 `VmmActionError::StartMicrovm`；API 侧收到 VMM 结果后用 `ParsedRequest::convert_to_response` 形成响应。状态机拒绝、构建失败与客户端未收到响应是不同层次的问题。
 
 **深入追问**
@@ -277,7 +277,7 @@ AI 写出的测试随机跑一千次都通过，如何更可靠地暴露取消/�
 - [源码与事件循环专题](../../references/source-and-event-loop.md)
 - [Go 并发检查](https://go.dev/doc/articles/race_detector)
 - [Tokio 优雅关闭](https://tokio.rs/tokio/topics/shutdown)
-- [Firecracker 测试指南](../../../../tests/README.md)
+- [Firecracker 测试指南](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/tests/README.md)
 - [E2B Go 实现](https://github.com/e2b-dev/runtime)
 - [OpenHands Python SDK](https://github.com/OpenHands/software-agent-sdk)
 - [verl 源码与接口](https://github.com/verl-project/verl)

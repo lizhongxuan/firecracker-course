@@ -21,11 +21,11 @@
 
 | 资料 | 阅读目的 |
 | --- | --- |
-| [官方入门：Running Firecracker](../../../docs/getting-started.md) | 按顺序准备内核、rootfs、程序和 API 配置 |
-| [Rootfs and Kernel Setup](../../../docs/rootfs-and-kernel-setup.md) | 理解镜像如何构建，先读流程再尝试定制 |
-| [内核配置](../../../docs/kernel-policy.md) | 找到块设备、网络和串口对应的驱动选项 |
-| [API 定义](../../../src/firecracker/swagger/firecracker.yaml) | 查 `/boot-source`、`/drives`、`/machine-config`、`/actions` |
-| 选读：[initrd](../../../docs/initrd.md) | 比较初始内存盘与磁盘 rootfs 的作用 |
+| [官方入门：Running Firecracker](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/getting-started.md) | 按顺序准备内核、rootfs、程序和 API 配置 |
+| [Rootfs and Kernel Setup](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/rootfs-and-kernel-setup.md) | 理解镜像如何构建，先读流程再尝试定制 |
+| [内核配置](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/kernel-policy.md) | 找到块设备、网络和串口对应的驱动选项 |
+| [API 定义](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/src/firecracker/swagger/firecracker.yaml) | 查 `/boot-source`、`/drives`、`/machine-config`、`/actions` |
+| 选读：[initrd](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/initrd.md) | 比较初始内存盘与磁盘 rootfs 的作用 |
 
 ## 3. 启动链路
 

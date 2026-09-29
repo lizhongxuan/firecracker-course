@@ -269,7 +269,7 @@ TCP 握手和小响应正常，只有大响应经常卡住，还能沿用“没�
 - [内核与启动专题](../../references/kernel-rootfs-and-boot.md)
 - [网络与 vsock 专题](../../references/network-and-vsock.md)
 - [存储与镜像专题](../../references/storage-and-images.md)
-- [官方入门](../../../../docs/getting-started.md)
+- [官方入门](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/getting-started.md)
 - [E2B 架构与组件入口](https://github.com/e2b-dev/runtime/blob/main/docs/ARCHITECTURE.md)
 - [containerd 镜像与存储](https://github.com/containerd/containerd)
 - [runc OCI bundle 示例](https://github.com/opencontainers/runc)

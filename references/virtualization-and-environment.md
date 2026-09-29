@@ -13,7 +13,7 @@
 
 **容器与 microVM。**通常的 Linux 容器通过 namespace 等机制隔离进程视图，并共享宿主机内核。microVM 有自己的客户机内核，利用硬件虚拟化与 KVM 建立隔离边界。两者都依赖正确的宿主机配置，选择时需要同时考虑兼容性、隔离需求、启动时间和运维成本。
 
-**KVM 与 VMM。**KVM 提供创建虚拟机、配置客户机内存、创建 vCPU 和运行客户机的内核接口。VMM 是用户态管理程序，组合这些接口并实现所需设备。Firecracker 是 VMM 的一种实现，一个进程对应一个 microVM。[KVM 官方 API 文档](https://docs.kernel.org/virt/kvm/api.html) 与 [Firecracker 架构](../../../docs/design.md) 分别描述这两层。
+**KVM 与 VMM。**KVM 提供创建虚拟机、配置客户机内存、创建 vCPU 和运行客户机的内核接口。VMM 是用户态管理程序，组合这些接口并实现所需设备。Firecracker 是 VMM 的一种实现，一个进程对应一个 microVM。[KVM 官方 API 文档](https://docs.kernel.org/virt/kvm/api.html) 与 [Firecracker 架构](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/design.md) 分别描述这两层。
 
 **架构与嵌套虚拟化。**x86_64 和 aarch64 是不同的指令集架构。客户机内核、用户态程序和 Firecracker 二进制必须适配运行环境。如果 Linux 服务器本身也是虚拟机，上层虚拟化平台需要提供合适的嵌套虚拟化能力；仅知道“它是 Linux”还不够。
 
@@ -21,9 +21,9 @@
 
 | 顺序 | 资料 | 本课只需回答 |
 | --- | --- | --- |
-| 必读 | [Getting Started：Prerequisites](../../../docs/getting-started.md) | 为什么需要 `/dev/kvm` 的读写权限？ |
-| 必读 | [Design：Host Integration / Internal Architecture](../../../docs/design.md) | API、VMM、vCPU 线程各负责什么？ |
-| 必读 | [内核支持策略](../../../docs/kernel-policy.md) | 能运行与被该版本官方验证有什么区别？ |
+| 必读 | [Getting Started：Prerequisites](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/getting-started.md) | 为什么需要 `/dev/kvm` 的读写权限？ |
+| 必读 | [Design：Host Integration / Internal Architecture](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/design.md) | API、VMM、vCPU 线程各负责什么？ |
+| 必读 | [内核支持策略](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/kernel-policy.md) | 能运行与被该版本官方验证有什么区别？ |
 | 选读 | [KVM API：General description](https://docs.kernel.org/virt/kvm/api.html) | VM fd 和 vCPU fd 分别代表什么？ |
 
 ## 3. 把组件连起来

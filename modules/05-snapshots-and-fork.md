@@ -15,9 +15,9 @@ fork 在平台层应定义父检查点、分支身份、共享不可变基础、
 ## 阅读资料
 
 - [快照与恢复专题](../references/snapshots-and-recovery.md)
-- [Snapshot Support](../../../docs/snapshotting/snapshot-support.md)
-- [快照版本](../../../docs/snapshotting/versioning.md)
-- [克隆随机状态](../../../docs/snapshotting/random-for-clones.md)
+- [Snapshot Support](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/snapshotting/snapshot-support.md)
+- [快照版本](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/snapshotting/versioning.md)
+- [克隆随机状态](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/snapshotting/random-for-clones.md)
 - [E2B 快照、恢复与 fork](https://github.com/e2b-dev/runtime)
 - [E2B 组件与状态流](https://github.com/e2b-dev/runtime/blob/main/docs/ARCHITECTURE.md)
 

@@ -17,7 +17,7 @@ TAP、路由、NAT 和访问控制职责不同；vsock 是宿主与客户机通�
 - [内核与启动专题](../references/kernel-rootfs-and-boot.md)
 - [网络与 vsock 专题](../references/network-and-vsock.md)
 - [存储与镜像专题](../references/storage-and-images.md)
-- [官方入门](../../../docs/getting-started.md)
+- [官方入门](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/getting-started.md)
 - [E2B 架构与组件入口](https://github.com/e2b-dev/runtime/blob/main/docs/ARCHITECTURE.md)
 - [containerd 镜像与存储](https://github.com/containerd/containerd)
 - [runc OCI bundle 示例](https://github.com/opencontainers/runc)
