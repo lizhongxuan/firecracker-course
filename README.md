@@ -31,6 +31,8 @@
 
 架构与设备博客：[Firecracker 与 KVM：从 microVM 架构到 VirtIO、时钟与控制台](articles/firecracker-kvm-architecture-and-devices.md)。
 
+VirtIO 设备博客：[VirtIO 设备科普：虚拟机的磁盘、网络与内存是怎样工作的](articles/virtio-devices-explained.md)。
+
 共 60 道统一编号题目，另有 4 项实操与 1 道综合设计题。阅读资料中的 Firecracker 专题保留完整原理与实验细节，课程顺序和考核均以本目录为准。
 
 ## 学习顺序

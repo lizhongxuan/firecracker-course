@@ -1,8 +1,10 @@
-# 模块 01：运行时基础与架构边界
+# Firecracker 运行时基础：从 Guest 执行到安全边界
 
-[课程总目录](../README.md) · [博客文章：Agent-Sandbox：Firecracker 运行路径与安全边界](../articles/agent-sandbox-firecracker-runtime-and-security-boundaries.md) · [本模块面试题与答案](../expert-assessment/by-module/01-runtime-foundations.md) · [下一模块：镜像、启动与网络存储](02-images-boot-and-io.md)
+当平台要运行一段不可信代码时，真正要回答的不是“怎样启动一个进程”，而是三件事：代码在哪个内核上运行、它怎样访问宿主资源、它凭什么调用外部业务。Firecracker 把第一件事放进带独立 Guest 内核的 microVM，但它不会自动替平台完成授权、资源治理或业务协议。
 
-## 先看懂组件
+本文沿一条任务路径展开：控制器创建 microVM，Guest 中的程序执行系统调用并访问虚拟设备，需要外部能力时再经过宿主代理。先看清这几条边界，再比较容器、gVisor 与 Firecracker，最后用源码路径和故障证据验证结论。文中的“隔离”指执行环境的边界，“授权”指对外部业务动作的许可，二者不能互相替代。
+
+## 一次任务经过哪些边界
 
 Firecracker 是运行在 Linux 宿主机上的用户态虚拟机监控器（VMM）。它通过 KVM 使用处理器的硬件虚拟化能力，组织一个轻量虚拟机所需的 CPU、内存和虚拟设备。microVM 内有自己的客户机 Linux 内核和用户程序。
 
@@ -29,7 +31,11 @@ flowchart LR
 | 客户机（guest） | 提供客户机内核和运行任务的用户空间 | 不能凭自己声称的 tenant ID 或审批字段获取授权 |
 | 控制器 / 工具代理 | 控制器管理任务；代理依据可信主体和策略执行获准的业务操作 | 二者不可把模型输出直接当成可信授权 |
 
-## 两条路径不要混为一谈
+![Firecracker 运行时中的控制路径、执行路径与授权路径三条边界](../assets/module-01-cartoon/runtime-boundaries.png)
+
+图中最容易混淆的地方有三个：控制器通过 Firecracker 管理 VM；Guest 任务首先在 Guest 内核中执行系统调用；需要访问外部业务时，才经过单独的可信工具代理。Firecracker/KVM 提供执行与隔离基础，工具代理才负责业务授权。
+
+## 从系统调用到设备 I/O：两条路径
 
 **客户机系统调用不是 Firecracker API。**例如 Python 调用 `write()` 时，CPU 正在 KVM 管理的客户机 vCPU 上执行；系统调用首先进入客户机 Linux 内核。客户机内核可以先把数据放入自己的页缓存，此时一次 `write()` 可能已经返回，并未发生磁盘设备 I/O。
 
@@ -58,7 +64,7 @@ sequenceDiagram
 
 文件写入还要区分“应用收到成功”“客户机文件系统提交”“虚拟块设备完成”和“宿主存储持久化”。如果任务关心断电后的数据保证，需另外核对 flush、缓存和存储后端语义；不能只凭 `write()` 成功推断数据已落到物理介质。
 
-## 隔离和授权是不同职责
+## 隔离解决“能碰到什么”，授权解决“能做什么”
 
 把不可信代码放入 microVM，可以缩小它直接访问宿主资源的边界。它不能自动限制经由一个被允许的工具代理产生的业务副作用：如果代理持有高权限凭证、接受客户机自报身份或不检查参数，代码即使没有逃出 VM，仍可能对外部系统越权。
 
@@ -80,7 +86,7 @@ Firecracker 项目本身还通过多层宿主防护约束 VMM 进程。当前本
 
 **核心记忆点：**microVM/KVM 限制任务如何接触宿主；jailer、seccomp、namespace 和 cgroup 进一步约束 VMM 进程及资源；控制器和工具代理决定哪些外部业务操作可以发生。不同层的防护不能相互替代。
 
-## 容器、gVisor 与 Firecracker 的位置
+## 什么时候要用 microVM：与容器、gVisor 对比
 
 | 方案 | 隔离思路 | 需要重点验证 | 常见职责 |
 | --- | --- | --- | --- |
@@ -90,34 +96,30 @@ Firecracker 项目本身还通过多层宿主防护约束 VMM 进程。当前本
 
 这些方案处于不同层，名称不能替代威胁模型。选型时先问代码是否可信、是否多租户、依赖哪些系统调用和设备、要访问哪些网络与文件，再用同一工作负载比较兼容性、隔离要求、启动和运行成本、调试与维护方式。
 
-## 项目源码阅读
+## 源码与证据
 
-逐项解析：[模块 01 源码分析：从容器启动到 microVM 执行](../references/01-runtime-source-walkthrough.md)。
+逐项解析：[源码分析：从容器启动到 microVM 执行](../references/01-runtime-source-walkthrough.md)。
 
-本模块的源码目标是理解组件职责和启动路径，为后面模块的运行时、启动与安全学习做准备。
+下面的阅读路径只追踪能回答本文问题的入口：谁创建进程或 VM，哪一层实施隔离，失败时应从哪里取证。无需通读整个仓库。
 
 1. **containerd/runc：**从 containerd 文档了解镜像和任务生命周期边界；选定提交后，沿 runc 的 create/start 路径追踪 OCI 配置怎样形成容器进程。记录入口、主要配置和一个失败点，不要阅读所有包。
 2. **进程限制：**在所选实现中定位 namespace、cgroup 和 seccomp 的配置生效位置，说明它们各限制什么，以及未覆盖的部分。文件名和默认值按提交核对。
 3. **gVisor：**阅读架构导读，把普通容器、gVisor 与 Firecracker 的应用系统调用路径画在一张对比图上；标出内核边界、兼容性问题和信任组件。无需深入阅读未涉及的组件。
 4. **Firecracker：**先读本仓库 [架构文档](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/design.md) 的 Host Integration、Internal Architecture 和 Sandboxing 部分。追踪控制器、API、VMM、KVM 和客户机各自所在层；需要真实函数名时再查源码，不要凭图猜调用细节。
 
-记录仓库、版本或提交、入口、观察到的机制，以及“项目当前已实现”与“平台还需设计”之间的区别。不能把课程建议自动说成这些开源项目已经提供的保证。
+记录仓库、版本或提交、入口和观察到的机制，并明确区分“项目当前已实现”与“平台还需设计”的保证。不能把本文的架构建议自动说成这些开源项目已经提供的功能。
 
-## 实验与设计练习
+## 验证与排障
 
-- 一张标明 host、guest、VMM、KVM、执行代码和工具代理的边界图。[参考答案一](#answer-boundaries)
-- 一份 Linux 环境记录，或明确列出的未验证项。[参考答案二](#answer-environment)
-- containerd/runc 的一条启动路径与职责说明。[参考答案三](#answer-container-start)
-- 一张普通容器、gVisor、Firecracker 的隔离边界和兼容性对比图。[参考答案四](#answer-runtime-comparison)
-- 至少一个失败分支，例如“`/dev/kvm` 可访问但创建 VM 失败”，并说明下一步要找什么证据。[参考答案五](#answer-failure)
+下面五个问题既可以作为文章的验证清单，也可以作为排障时的证据模板。每个答案都先给结论，再展开机制和可观察证据。
 
 <a id="answer-boundaries"></a>
 
-### 题目一：一张标明 host、guest、VMM、KVM、执行代码和工具代理的边界图
+### 1. 如何画出 Host、Guest、VMM、KVM 与工具代理的边界
 
-#### 回答
+#### 解析
 
-我会从**代码执行、虚拟机管理、业务授权**三个层次解释这张图。
+可以从**代码执行、虚拟机管理、业务授权**三个层次解释这张图。
 
 首先，Host 是运行 Firecracker 的 Linux 宿主系统，Guest 是 microVM 内部的 Linux 系统，两边各有自己的内核。Agent 生成的 Python 或 Shell 代码在 Guest 中执行，普通系统调用首先由 Guest 内核处理。
 
@@ -183,6 +185,8 @@ Guest Python
 
 深入解析：[virtio-blk 原理：Guest 驱动如何与 Firecracker 完成磁盘 I/O](../articles/virtio-blk-driver-and-io-path.md)，包含设备初始化、共享队列、一次读写的源码路径、完成通知与持久化边界。
 
+各类设备的用途与区别见 [VirtIO 设备科普：虚拟机的磁盘、网络与内存是怎样工作的](../articles/virtio-devices-explained.md)。
+
 **动作二：请求删除某个云端文件。**
 
 ```text
@@ -200,21 +204,21 @@ vsock 是虚拟机与宿主通信的一种机制。在 Firecracker 中，其传�
 
 <a id="answer-environment"></a>
 
-### 题目二: 一份 Linux 环境记录，或明确列出的未验证项
+### 2. 如何记录 Linux 环境，并区分已验证与未验证
 
-#### 回答
+#### 解析
 
-我会把“能运行 Firecracker”拆成四层检查：**系统与架构匹配、设备访问权限、KVM 实际能力、目标 Guest 启动结果**。
+把“能运行 Firecracker”拆成四层检查：**系统与架构匹配、设备访问权限、KVM 实际能力、目标 Guest 启动结果**。
 
 第一层确认机器是适配版本的 Linux，CPU 架构与 Firecracker、Guest 内核和用户程序相匹配。如果服务器本身是虚拟机，还要确认外层平台支持所需的嵌套虚拟化，也就是允许在虚拟机里继续运行虚拟机。
 
 第二层用实际启动 Firecracker 的身份检查 `/dev/kvm`；设备存在、权限位看起来可读写、进程实际打开设备成功，是不同强度的证据。第三层检查 KVM API 和必需能力，再验证能否创建 VM 和 vCPU。第四层才是启动指定 Guest、运行一个简单任务并正常回收。
 
-因此，只有 `/dev/kvm` 的检查结果时，我会说“权限预检通过”，不会把它表述为“服务器已经验证可用”。即使一次启动成功，也不能据此推断高并发、恢复和安全策略都已验证。[运行前提](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/getting-started.md#prerequisites) · [版本对应的内核支持范围](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/kernel-policy.md) · [KVM API 与能力检查][kvm-api]
+因此，只有 `/dev/kvm` 的检查结果时，只能说“权限预检通过”，不能表述为“服务器已经验证可用”。即使一次启动成功，也不能据此推断高并发、恢复和安全策略都已验证。[运行前提](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/getting-started.md#prerequisites) · [版本对应的内核支持范围](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/kernel-policy.md) · [KVM API 与能力检查][kvm-api]
 
 #### 当前可以如实填写的环境记录
 
-下面根据本次学习已有信息填写，**没有连接或检测你的 Linux 服务器**。
+下面只根据当前环境中已有的信息填写，**没有连接或检测你的 Linux 服务器**。
 
 | 记录项 | 当前记录 | 证据与状态 |
 | --- | --- | --- |
@@ -273,11 +277,11 @@ ulimit -n
 
 <a id="answer-container-start"></a>
 
-### 题目三：containerd/runc 怎样把配置变成运行中的进程
+### 3. containerd/runc 怎样把配置变成运行中的进程
 
-#### 回答
+#### 解析
 
-我会把这条链分成**准备文件系统、创建容器环境、启动用户程序、管理退出**四步。
+这条链可以分成**准备文件系统、创建容器环境、启动用户程序、管理退出**四步。
 
 containerd 负责镜像内容、文件系统快照和任务管理；通过 `containerd-shim-runc-v2` 对接 runc。shim 是连接 containerd 与底层运行时的常驻管理进程，负责接收任务操作、管理输入输出和报告退出。runc 则读取 OCI 配置，调用 Linux 内核机制建立容器的运行环境。
 
@@ -354,11 +358,11 @@ sequenceDiagram
 
 <a id="answer-runtime-comparison"></a>
 
-### 题目四：普通容器、gVisor、Firecracker 怎样比较
+### 4. 普通容器、gVisor、Firecracker 怎样比较
 
-#### 回答
+#### 解析
 
-我会先问三个问题：**谁处理应用的系统调用，应用能直接触及多大的宿主接口，代价体现在哪里。**
+先问三个问题：**谁处理应用的系统调用，应用能直接触及多大的宿主接口，代价体现在哪里。**
 
 普通容器里的程序由宿主 Linux 内核处理系统调用，namespace、cgroup、权限和 seccomp 等机制约束它。它容易融入容器工作流，但不可信程序仍会触及允许范围内的宿主内核接口。
 
@@ -401,7 +405,7 @@ Firecracker 图里的 KVM 箭头表示执行支撑。应用做计算或 Guest �
 | 主要边界 | 宿主内核实施的进程隔离与权限限制 | 应用与宿主之间增加独立接口实现，约束 Sentry 等组件访问宿主 | Guest 与宿主之间的硬件虚拟化边界，以及 KVM/VMM 设备接口 |
 | 兼容性首先检查什么 | 宿主内核特性、权限、挂载和安全配置 | 所需系统调用及行为是否被实现，应用是否有可用替代路径 | Guest 内核与驱动、CPU 架构、所需虚拟设备及宿主支持条件 |
 | 成本主要来自哪里 | 容器管理、文件系统、网络与资源策略 | 系统调用拦截与实现、文件/网络路径，以及 Sentry 等资源消耗 | Guest 内核和内存、启动或恢复过程、设备 I/O 与 VM 管理 |
-| 是否必须有 KVM | 常规 runc 容器不需要 | 取决于所选平台；例如 systrap 不需要，KVM 平台需要 | 本课程讨论的 Linux/KVM 路径需要 |
+| 是否必须有 KVM | 常规 runc 容器不需要 | 取决于所选平台；例如 systrap 不需要，KVM 平台需要 | 本文讨论的 Linux/KVM 路径需要 |
 | 不能由它自动解决什么 | 外部业务授权、过宽凭证、错误挂载和出站策略 | 同左；应用内核隔离不替代业务权限检查 | 同左；独立 Guest 内核不替代业务权限检查 |
 
 需要特别分清：**gVisor 也可以使用 KVM，但不因此变成 Firecracker 那种“启动一套通用 Guest Linux 内核和设备模型”的方案。**gVisor 的 KVM 平台借助虚拟化机制实现执行和地址空间隔离，对应用提供接口的仍是 Sentry。systrap 则是利用 Linux 系统调用拦截机制把请求交给 Sentry 的另一种平台。[gVisor Platform Guide][gvisor-platforms]
@@ -422,13 +426,13 @@ Firecracker 图里的 KVM 箭头表示执行支撑。应用做计算或 Guest �
 
 <a id="answer-failure"></a>
 
-### 题目五：`/dev/kvm` 可访问，但 VM 创建失败，怎样分析
+### 5. `/dev/kvm` 可访问，但 VM 创建失败，怎样分析
 
-#### 回答
+#### 解析
 
-我会先确认“可访问”和“创建失败”分别指哪一步。设备存在或权限预检通过，不代表实际进程能够打开它；实际打开成功，也不代表 `KVM_CREATE_VM` 一定成功。
+先确认“可访问”和“创建失败”分别指哪一步。设备存在或权限预检通过，不代表实际进程能够打开它；实际打开成功，也不代表 `KVM_CREATE_VM` 一定成功。
 
-接着保留原始日志，把错误定位到打开设备、API/能力检查、创建 VM、创建 vCPU、配置内存或启动 Guest 中的具体阶段。如果已经确认 `KVM_CREATE_VM` 返回错误，我会记录系统调用参数和 errno，再结合运行身份、外层安全策略、资源状态和对应内核实现判断原因。
+接着保留原始日志，把错误定位到打开设备、API/能力检查、创建 VM、创建 vCPU、配置内存或启动 Guest 中的具体阶段。如果已经确认 `KVM_CREATE_VM` 返回错误，记录系统调用参数和 errno，再结合运行身份、外层安全策略、资源状态和对应内核实现判断原因。
 
 最后只根据证据调整配置或进行有限重试。比如 `EINTR` 表示调用被中断，可能适合重试；权限、参数和能力问题则需要先修正条件。**排障的关键是找到失败的那一层，而不是把所有启动失败都归成 `/dev/kvm` 权限问题。**[KVM API][kvm-api] · [Firecracker KVM 初始化](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/src/vmm/src/vstate/kvm.rs) · [VM 创建实现](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/src/vmm/src/vstate/vm.rs)
 
@@ -485,11 +489,11 @@ ioctl(7, KVM_CREATE_VM, 0)                 = -1 EINTR
 
 交付时，把结论写成“**观察到什么 → 定位到哪一步 → 哪些原因尚未证实 → 下一条证据是什么**”。例如：“设备打开成功，失败点为 VM 创建；出现 `EINTR`，尚未确定来源；下一步核对本版本重试后的最终结果及同时间段宿主事件。”这比“可能是 KVM 没配置好”更容易验证和继续排查。
 
-## 复核资料
+## 进一步阅读
 
 本节按本地 Firecracker 仓库与所选项目版本核对。先查架构和实验相关章节；查具体系统调用或兼容问题时，再进入完整 API 文档。
 
-- **本模块首选：**[Firecracker Design](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/design.md)（Host Integration、Internal Architecture、Sandboxing）
+- **核心资料：**[Firecracker Design](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/design.md)（Host Integration、Internal Architecture、Sandboxing）
 - **真实启动前提：**[Firecracker Getting Started](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/getting-started.md)、[内核支持策略](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/kernel-policy.md)
 - **服务器安全边界：**[Jailer](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/jailer.md)、[生产宿主机建议](https://github.com/firecracker-microvm/firecracker/blob/30471852666564d980f330d0575115eda7d5ce8e/docs/prod-host-setup.md)
 - **遇到接口问题再查：**[Linux KVM API](https://docs.kernel.org/virt/kvm/api.html)
